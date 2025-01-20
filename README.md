@@ -1,6 +1,6 @@
 # Portfolio
 
-- **Customer Relationship Prediction**
+**Customer Relationship Prediction**
 - Goal: Improve customer retention and increase product sales
 - Task: Predict churn, appetency, and upselling to enable targeted marketing strategies
 - Challenges: Heterogeneous data, imbalanced classes, and noisy data
