@@ -8,5 +8,5 @@
   - Implemented frequency encoding to handle categorical features
   - Applied an undersampling technique to address class imbalance
   - Employed `Random Forest` and `Logistic Regression` for prediction tasks
-- Results: `Random Forest` outperformed `Logistic Regression` in terms of ROC AUC score for all the prediction tasks
+- Results: `Random Forest` outperformed `Logistic Regression` in terms of ROC AUC score for Upselling and Appetency prediction tasks, while performance for Churn prediction was similar between the two models.
 - Tools: Python (`Matplotlib`, `NumPy`, `Pandas`, `Seaborn`, `scikit-learn`)
