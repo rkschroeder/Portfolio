@@ -1,4 +1,4 @@
-# Portfolio
+# Project
 
 1. **[Customer Relationship Prediction](https://github.com/rkschroeder/Portfolio/tree/main/Customer_Relationship_Prediction)**
 - Goal: Improve customer retention and increase product sales
