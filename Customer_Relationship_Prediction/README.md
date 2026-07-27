@@ -12,6 +12,57 @@ The project started as a single exploratory notebook (kept in `notebooks/` for
 history) and has since been refactored into installable modules, a Poetry
 project, and a multipage Streamlit app.
 
+## Architecture
+
+Training and serving are separate steps: `poetry run train` reads the raw data
+once and writes every artifact the app needs to `models/`; the Streamlit app
+only ever reads those artifacts, so it starts instantly instead of retraining
+on every launch.
+
+```mermaid
+flowchart TD
+    raw["data/raw/*.data, *.labels\n(KDD Cup 2009)"]
+
+    subgraph pipeline["Training pipeline — poetry run train"]
+        direction TB
+        load["data.py\nload_raw_dataset()"]
+        clean["preprocessing.py\nclean_dataset()"]
+        encode["features.py\nfrequency encoding +\nRF feature ranking"]
+        train["modeling.py\nRandom Forest / Logistic\nRegression + undersampling"]
+        orchestrate["training.py\nmain()"]
+
+        load --> clean --> encode --> train --> orchestrate
+    end
+
+    raw --> load
+    orchestrate --> artifacts["models/\n*.joblib models, metrics.json,\nfeature_stats.json, test sets"]
+
+    subgraph app["Streamlit app — poetry run streamlit run app.py"]
+        direction TB
+        support["app_support.py\ncached loaders"]
+        home["app.py — Overview"]
+        eda["1_Exploratory_Data_Analysis.py"]
+        perf["2_Model_Performance.py"]
+        predict["3_Predict_Customer_Behavior.py"]
+
+        support --> home
+        support --> eda
+        support --> perf
+        support --> predict
+    end
+
+    artifacts --> support
+    raw -.-> eda
+
+    home --> browser(["Your browser"])
+    eda --> browser
+    perf --> browser
+    predict --> browser
+```
+
+`config.py` (paths, thresholds, hyperparameters) is used throughout the
+training pipeline but is left out of the diagram to keep it readable.
+
 ## Project structure
 
 ```
@@ -34,35 +85,50 @@ notebooks/                    # the original exploratory notebook
 tests/                        # pytest unit tests for the pipeline modules
 ```
 
-## Setup
+## Getting started
 
-Requires [Poetry](https://python-poetry.org/) and Python 3.10–3.13.
+### Prerequisites
+
+- Python 3.10–3.13
+- [Poetry](https://python-poetry.org/docs/#installation)
+
+### 1. Clone the repo
+
+This project lives inside the `Portfolio` monorepo, so clone that and `cd`
+into this subfolder — all commands below assume you're inside it:
+
+```bash
+git clone https://github.com/rkschroeder/Portfolio.git
+cd Portfolio/Customer_Relationship_Prediction
+```
+
+### 2. Install dependencies
 
 ```bash
 poetry install
 ```
 
-## Train the models
+### 3. Train the models
 
-The Streamlit app reads pre-trained artifacts from `models/` rather than
-training on every launch. Generate them once (takes a few minutes — six models
-across three targets):
+Generates every artifact the app reads: trained Random Forest / Logistic
+Regression pipelines, the fitted frequency encoder, per-target feature
+importances, held-out test sets, and a `metrics.json` summary — all written
+to `models/`. Takes a few minutes (six models across three targets):
 
 ```bash
 poetry run train
 ```
 
-This writes trained Random Forest / Logistic Regression pipelines, the fitted
-frequency encoder, per-target feature importances, held-out test sets, and a
-`metrics.json` summary to `models/`.
-
-## Run the app
+### 4. Run the app
 
 ```bash
 poetry run streamlit run app.py
 ```
 
-## Run the tests
+Streamlit prints a local URL (defaults to <http://localhost:8501>) — open it
+in your browser.
+
+### 5. Run the tests (optional)
 
 ```bash
 poetry run pytest
