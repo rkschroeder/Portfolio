@@ -3,10 +3,11 @@
 1. **[Customer Relationship Prediction](https://github.com/rkschroeder/Portfolio/tree/main/Customer_Relationship_Prediction)**
 - Goal: Improve customer retention and increase product sales
 - Task: Predict churn, appetency, and upselling to enable targeted marketing strategies
-- Challenges: Heterogeneous data, imbalanced classes, and noisy data
+- Challenges: Anonymized/unlabeled features, heterogeneous data, imbalanced classes, and noisy data
 - Action:
   - Implemented frequency encoding to handle categorical features
   - Applied an undersampling technique to address class imbalance
   - Employed `Random Forest` and `Logistic Regression` for prediction tasks
 - Results: `Random Forest` outperformed `Logistic Regression` in terms of ROC AUC score for Upselling and Appetency prediction tasks, while performance for Churn prediction was similar between the two models.
-- Tools: Python (`Matplotlib`, `NumPy`, `Pandas`, `Seaborn`, `scikit-learn`)
+- Tools: Python (`scikit-learn`, `imbalanced-learn`, `feature-engine`, `Streamlit`, `Plotly`), `Poetry`
+- Now shipped as a Poetry-managed Streamlit app with an interactive prediction dashboard (see the project's own README for setup/run instructions); the original exploratory notebook is kept under `notebooks/`.
