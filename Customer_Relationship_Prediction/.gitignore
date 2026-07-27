@@ -1,6 +1,9 @@
 # Generated training artifacts (regenerate with `poetry run train`)
 models/*
 
+# Generated warehouse (regenerate with `poetry run elt`)
+data/warehouse.duckdb
+
 # Python
 __pycache__/
 *.pyc

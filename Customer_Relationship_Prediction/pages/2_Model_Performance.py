@@ -9,7 +9,8 @@ st.title("Model Performance")
 
 if not app_support.models_available():
     st.warning(
-        "No trained models found yet. Run `poetry run train` from the project root first.",
+        "No trained models found yet. Run `poetry run elt` then `poetry run train` from the "
+        "project root first.",
         icon="⚠️",
     )
     st.stop()

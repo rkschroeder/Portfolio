@@ -6,6 +6,13 @@ from customer_behavior import app_support, config, palette, preprocessing
 st.set_page_config(page_title="EDA · Customer Behavior", page_icon="\U0001F4CA", layout="wide")
 st.title("Exploratory Data Analysis")
 
+if not app_support.warehouse_available():
+    st.warning(
+        "No warehouse found yet. Run `poetry run elt` from the project root first.",
+        icon="⚠️",
+    )
+    st.stop()
+
 raw_features, raw_labels = app_support.load_raw_data()
 
 st.markdown(

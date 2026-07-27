@@ -14,9 +14,11 @@ dependencies = [
     "streamlit (>=1.38,<2.0)",
     "plotly (>=5.24,<6.0)",
     "joblib (>=1.4,<2.0)",
+    "duckdb (>=1.0,<2.0)",
 ]
 
 [project.scripts]
+elt = "customer_behavior.elt:main"
 train = "customer_behavior.training:main"
 
 [tool.poetry]

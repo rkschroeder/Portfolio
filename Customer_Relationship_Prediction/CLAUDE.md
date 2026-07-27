@@ -23,3 +23,11 @@
   (`WindowsApps\python.exe`) and fails with exit code 9009. The project venv
   is already pinned to Python 3.13 (conda's `python.exe`); this only matters
   if the venv needs to be recreated.
+- **ELT layer**: `poetry run elt` extracts `data/raw/*`
+  into a DuckDB warehouse (`data/warehouse.duckdb`, gitignored, regenerated on
+  demand); `poetry run train` and the EDA page read from that warehouse
+  instead of the raw files directly. 
+  - **DuckDB** — embedded/file-based, zero infrastructure, no
+    Docker needed to run it.
+  - **Transform stays in pandas** — `preprocessing.py`/`features.py`
+  - **Docker and Airflow are explicitly deferred**, not in scope yet. 

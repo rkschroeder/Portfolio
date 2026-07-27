@@ -26,10 +26,15 @@ def compute_feature_stats(df) -> dict:
 
 
 def main() -> None:
+    if not data.warehouse_available():
+        raise SystemExit(
+            f"No warehouse found at {config.WAREHOUSE_PATH}. Run `poetry run elt` first."
+        )
+
     config.MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
-    print("Loading raw data...")
-    raw_features, raw_labels = data.load_raw_dataset()
+    print("Loading data from the warehouse...")
+    raw_features, raw_labels = data.read_warehouse()
 
     print(f"Raw shape: {raw_features.shape}")
     df_clean, labels_clean, categorical_cols = preprocessing.clean_dataset(raw_features, raw_labels)

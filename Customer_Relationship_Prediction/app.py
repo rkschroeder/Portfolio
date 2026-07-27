@@ -24,16 +24,25 @@ customers most likely to respond, instead of marketing to everyone.
 
 The data comes from the [KDD Cup 2009](https://kdd.org/kdd-cup/view/kdd-cup-2009/Intro)
 dataset: 50,000 customers, 230 anonymized features, heavy class imbalance, and a lot
-of missing data. The pipeline handles this with column/row filtering, frequency
-encoding for categorical features, undersampling for class imbalance, and compares
-Random Forest against Logistic Regression using ROC AUC.
+of missing data. Raw files are extracted and loaded into a DuckDB warehouse, then
+the pipeline handles cleaning with column/row filtering, frequency encoding for
+categorical features, undersampling for class imbalance, and compares Random
+Forest against Logistic Regression using ROC AUC.
 """
 )
 
-if not app_support.models_available():
+if not app_support.warehouse_available():
     st.warning(
-        "No trained models found yet. From the project root, run:\n\n"
-        "```\npoetry install\npoetry run train\n```\n\n"
+        "No warehouse found yet. From the project root, run:\n\n"
+        "```\npoetry install\npoetry run elt\npoetry run train\n```\n\n"
+        "`elt` extracts the raw files into a DuckDB warehouse; `train` reads from "
+        "it and writes the model artifacts the other pages need to `models/`.",
+        icon="⚠️",
+    )
+elif not app_support.models_available():
+    st.warning(
+        "Warehouse found, but no trained models yet. From the project root, run:\n\n"
+        "```\npoetry run train\n```\n\n"
         "This trains all six models (Random Forest + Logistic Regression × 3 targets) "
         "and writes the artifacts the other pages need to `models/`.",
         icon="⚠️",

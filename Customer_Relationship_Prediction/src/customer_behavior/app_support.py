@@ -16,9 +16,14 @@ def models_available() -> bool:
     return (config.MODELS_DIR / "metrics.json").exists()
 
 
-@st.cache_data(show_spinner="Loading raw data...")
+def warehouse_available() -> bool:
+    """Whether `poetry run elt` has been run at least once."""
+    return data.warehouse_available()
+
+
+@st.cache_data(show_spinner="Loading data from the warehouse...")
 def load_raw_data() -> tuple[pd.DataFrame, dict[str, pd.DataFrame]]:
-    return data.load_raw_dataset()
+    return data.read_warehouse()
 
 
 @st.cache_data
