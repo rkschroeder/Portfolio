@@ -13,6 +13,13 @@ LABEL_FILES = {
     "upselling": DATA_DIR / "orange_small_train_upselling.labels",
 }
 
+# DuckDB warehouse populated by `poetry run elt` (Extract raw files -> Load into tables).
+# Everything downstream (training, EDA) reads from here, not from data/raw/ directly.
+WAREHOUSE_PATH = PROJECT_ROOT / "data" / "warehouse.duckdb"
+RAW_FEATURES_TABLE = "raw_features"
+RAW_LABELS_TABLE = "raw_labels"
+CUSTOMER_ID_COLUMN = "customer_id"
+
 TARGETS = ["churn", "appetency", "upselling"]
 
 # Fraction of non-null values a column must have to survive the missingness filter.
