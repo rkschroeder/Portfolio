@@ -1,0 +1,11 @@
+# Generated training artifacts (regenerate with `poetry run train`)
+models/*
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Streamlit
+.streamlit/secrets.toml
